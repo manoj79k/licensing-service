@@ -31,12 +31,19 @@ public class LicenseServiceController {
        
     }
     
-    @RequestMapping(value="/{licenseId}/{clientType}",method = RequestMethod.GET)
+    @RequestMapping(value="client/{licenseId}/{clientType}",method = RequestMethod.GET)
     public License getLicensesWithClient( @PathVariable("organizationId") String organizationId,
                                           @PathVariable("licenseId") String licenseId,
                                           @PathVariable("clientType") String clientType) {
-
-        return licenseService.getLicense(organizationId,licenseId, clientType);
+    		return licenseService.getLicense(organizationId,licenseId, clientType);	
+    }
+   
+    @RequestMapping(value="withpoutclient/{licenseId}",method = RequestMethod.GET)
+    public License getLicensesWithpoutClient( @PathVariable("organizationId") String organizationId,
+                                          @PathVariable("licenseId") String licenseId) {
+    
+    	System.out.println("getLicensesWithpoutClient=====");	
+    	return licenseService.getLicense(organizationId,licenseId);
     }
 
     
