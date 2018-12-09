@@ -3,6 +3,7 @@ package com.mk.licenses.controllers;
 import java.util.Optional;
 
 import org.springframework.hateoas.VndErrors;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.mk.license.util.ExceptionResponse;
 import com.mk.license.util.LicenseNotFoundException;
@@ -20,7 +22,7 @@ import com.mk.license.util.LicenseNotFoundException;
 @ControllerAdvice(assignableTypes = LicenseServiceController.class)
 @RequestMapping(produces = "application/vnd.error+json")
 @RestController
-public class LicenseControllerAdvice {
+public class LicenseControllerAdvice extends ResponseEntityExceptionHandler{
 	
   @ExceptionHandler(LicenseNotFoundException.class) public ResponseEntity < VndErrors > notFoundException(final LicenseNotFoundException e) {
         return error(e, HttpStatus.NOT_FOUND, e.getId().toString());
@@ -40,8 +42,8 @@ public class LicenseControllerAdvice {
         return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 	 
- @ExceptionHandler(MethodArgumentNotValidException.class)
- public ResponseEntity<ExceptionResponse> invalidInput(MethodArgumentNotValidException ex) {
+/* @ExceptionHandler(MethodArgumentNotValidException.class)
+ public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
      BindingResult result = ex.getBindingResult();
      ExceptionResponse response = new ExceptionResponse();
      response.setErrorCode("Validation Error");
@@ -49,5 +51,16 @@ public class LicenseControllerAdvice {
     response.setErrors(ValidationUtil.fromBindingErrors(result));
      return new ResponseEntity<ExceptionResponse>(response, HttpStatus.BAD_REQUEST);
  }
+ */
  
+ @Override
+protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+		HttpHeaders headers, HttpStatus status, WebRequest request) {
+	 BindingResult result = ex.getBindingResult();
+     ExceptionResponse response = new ExceptionResponse();
+     response.setErrorCode("Validation Error in Request");
+     //response.setErrorMessage(result.toString());
+     response.setErrors(ValidationUtil.fromBindingErrors(result));
+     return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+}
 }
