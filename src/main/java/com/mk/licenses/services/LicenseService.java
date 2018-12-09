@@ -1,5 +1,6 @@
 package com.mk.licenses.services;
 
+import com.mk.license.util.LicenseNotFoundException;
 import com.mk.licenses.clients.OrganizationDiscoveryClient;
 import com.mk.licenses.clients.OrganizationFeignClient;
 import com.mk.licenses.clients.OrganizationRestTemplateClient;
@@ -115,21 +116,30 @@ public class LicenseService {
     }
  
    
-    
+/*    
  @HystrixCommand(fallbackMethod="getDefauletLicense", 
 		 commandProperties= {@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value="1000")},
 		 threadPoolKey="licenseThreadPool",
 		 threadPoolProperties= {@HystrixProperty(name="coreSize",value="7"),
 				 			   @HystrixProperty(name="maxQueueSize",value="10")}
-		 )
- public License getLicense(String licenseId){
+		 )*/
+ public License getLicense(String licenseId) throws LicenseNotFoundException{
         
-     System.out.println("befor call"); 
-	 randomlyRunLong();
+	 License license=null;
+    try
+    {
+	 System.out.println("befor call"); 
+    // randomlyRunLong();
 	 System.out.println("afer call");
-	 return licenseRepository.getLicense(licenseId);
-    	
+	 
+	 license= licenseRepository.getLicense(licenseId);
     }
+    catch(Exception e)
+	    {
+	    	throw new LicenseNotFoundException(licenseId);
+	    }
+    return license;
+}
  
  
  
@@ -161,8 +171,15 @@ public class LicenseService {
     	return licenseRepository.updateLicenses(license);
     }
 
-    public void deleteLicense(String licenseId){
-    	 licenseRepository.deleteLicenses(licenseId);
+    public void deleteLicense(String licenseId) throws LicenseNotFoundException{
+    	try
+    	{
+    		licenseRepository.deleteLicenses(licenseId);
+    		
+    	}catch(Exception e)
+	    {
+	    	throw new LicenseNotFoundException(licenseId);
+	    }
     }
 
     private void randomlyRunLong(){

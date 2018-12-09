@@ -2,11 +2,15 @@ com\mk\licenses\model\Organization.class
 com\mk\licenses\Application.class
 com\mk\licenses\model\License.class
 com\mk\licenses\services\OrganizationService.class
+com\mk\license\util\ExceptionResponse.class
 com\mk\licenses\clients\OrganizationRestTemplateClient.class
+com\mk\licenses\controllers\ValidationUtil.class
 com\mk\licenses\config\ServiceConfig.class
 com\mk\licenses\controllers\LicenseServiceController.class
 com\mk\licenses\services\LicenseService.class
 com\mk\licenses\clients\OrganizationFeignClient.class
+com\mk\license\util\LicenseNotFoundException.class
 com\mk\licenses\clients\OrganizationDiscoveryClient.class
+com\mk\licenses\controllers\LicenseControllerAdvice.class
 com\mk\licenses\repository\LicenseRepository.class
 com\mk\licenses\repository\LicenseRowMapper.class

@@ -72,15 +72,17 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "licenses")
 public class License{
   @Id
-  @Column(name = "id", nullable = false)
+  @Column(name = "id")
   private String licenseId;
 
-  @Column(name = "ORGANIZATIONID", nullable = false)
+  @Column(name = "ORGANIZATIONID")
+  @NotNull(message = "organizationId can not be null.")
   private String organizationId;
 
   @Transient
@@ -95,10 +97,12 @@ public class License{
   @Transient
   private String contactEmail ="";
 
-  @Column(name = "PRODUCTNAME", nullable = false)
+  @Column(name = "PRODUCTNAME")
+  @NotNull(message = "productName can not be null.")
   private String productName;
 
-  @Column(name = "LICENSETYPE", nullable = false)
+  @Column(name = "LICENSETYPE")
+  @NotNull(message = "licenseType can not be null.")
   private String licenseType;
 
   /*@Column(name = "license_max", nullable = false)
