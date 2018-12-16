@@ -60,13 +60,11 @@ public class LicenseService {
     }
 
    
-    @HystrixCommand(fallbackMethod="getDefauletOrganization", 
+   /* @HystrixCommand(fallbackMethod="getDefauletOrganization", 
       		 commandProperties= {@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value="1100")}
-      		 )
+      		 )*/
     public Organization getOrganization(String organizationId){
-    	System.out.println("License Service getOrganization");
-    	randomlyRunLong();
-    	randomlyRunLong();
+    	System.out.println("calling the Organization Service from license service");
     	return organizationRestClient.getOrganization(organizationId);
     }
     
